@@ -43,7 +43,7 @@ async def add_place(title: Annotated[str, Form()], rating: Annotated[float, Form
 async def update_location(place_id: str, lat: Annotated[str, Form()], lon: Annotated[str, Form()]):
     p = (Place.collection.filter("id", "==", place_id)).get()
     if p:
-        p.geo_point = GP(latitude=float(lat), longitude=float(lon))
+        p.geo_point = GeoPoint(latitude=float(lat), longitude=float(lon))
         p.save()
         return JSONResponse(content={"message": f"Place with {place_id} was updated"}, status_code=200)
     else:
