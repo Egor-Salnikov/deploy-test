@@ -14,7 +14,6 @@ class Place(Model):
     approved: BooleanField = BooleanField()
     image_references: ListField = ListField()
 
-    @places_init_validator
     def __init__(
             self,
             title: str = None,

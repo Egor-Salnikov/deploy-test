@@ -16,7 +16,6 @@ class User(Model):
     users_score: NumberField = NumberField()
     comments: ListField = ListField(NestedModel(Comment))
 
-    @users_init_validator
     def __init__(
             self,
             email=None,
