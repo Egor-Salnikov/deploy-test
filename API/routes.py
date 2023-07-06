@@ -39,6 +39,17 @@ async def add_place(title: Annotated[str, Form()], rating: Annotated[float, Form
     return JSONResponse(content={f"{place.id}": f"{title}"}, status_code=200)
 
 
+@app.post("/update-place-location/{place_id}")
+async def update_location(place_id: str, lat: Annotated[str, Form()], lon: Annotated[str, Form()]):
+    p = (Place.collection.filter("id", "==", place_id)).get()
+    if p:
+        p.geo_point = GP(latitude=float(lat), longitude=float(lon))
+        p.save()
+        return JSONResponse(content={"message": f"Place with {place_id} was updated"}, status_code=200)
+    else:
+        return JSONResponse(content={"message": "There is no such place"}, status_code=404)
+
+
 @app.post("/upload-image")
 async def upload_image(image: bytes = File(), place_id: str = Form(), image_extension: str = Form()):
     blobs = bucket.list_blobs(prefix=place_id)
